@@ -1,12 +1,16 @@
 #!/usr/bin/python
 
 import os
+from sys import argv
 from subprocess import call
 import time
 import threading
 import Queue
 
-numClients = 20
+targetIP = argv[1]
+numClients = argv[2]
+script_name = "bigip_loadtest.js"
+
 queue = Queue.Queue()
 iid = 1
 iid_lock = threading.Lock()
@@ -19,14 +23,14 @@ class ThreadedClient(threading.Thread):
 		
 	def run(self):
 		# client code goes here.
-		script_name = "bigip_loadtest.js"
+		
 		clientId = next_id()
 		casper_cmd = "casperjs"
 		exec_file = casper_cmd + " " + os.getcwd() + "/" + script_name
-		call([casper_cmd, script_name , "--ignore-ssl-errors=yes"])
+		call([casper_cmd, script_name, targetIP, "--ignore-ssl-errors=yes"])
 		
 
-		print "Client " + str(clientId) + " finished"
+		print "\t Client " + str(clientId) + " finished"
 		# Write output to file.  probably not needed
 		# with open("mechanize_results.html", "w") as f:
 		# 	f.write(content)
@@ -42,11 +46,12 @@ def next_id():
 
 def main():
 	client = 1
-	for i in range(numClients):
+	print "Load test start targetting IP: " + targetIP
+	for i in range(int(numClients)):
 		time.sleep(1)
 		t = ThreadedClient(queue)
 		t.start()
-		print "started client " + str(client)
+		print "\t started client " + str(client)
 		client = client + 1
 	
 	queue.join()

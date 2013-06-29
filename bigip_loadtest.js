@@ -1,20 +1,22 @@
+// debug options. Uncomment these when debugging
+var casper = require('casper').create({
+    // verbose: true,
+    logLevel: "debug"
+});
 
+// require('utils').dump(casper.steps.map(function(step) {
+//     return step.toString();
+// }));
+
+
+var bigip_ip = casper.cli.args[0];
 
 // Edit these for your environment
 var username = 'admin';
 var password = 'admin';
-var bigip_ip = '1.1.1.2';
 
-
-// Store the virtual server  name as a global to check for successful creation
+// Store the virtual server  name as a global to check for successful creation (TODO)
 var vs_name = randomString();
-
-// debug options
-var casper = require('casper').create({
-    // verbose: true,
-    logLevel: "debug"
-
-});
 
 
 // Open login page, fill out form and submit.
@@ -27,14 +29,18 @@ casper.start('https://' + bigip_ip + '/tmui/login.jsp', function() {
         }, true);
 });
 
-// casper.then(function() {this.capture('f5.png', {top: 0,left: 0,width: 1000,height: 1000});});
+
 // Wait for welcome page to load before continuing 
 casper.then(function() {
     this.waitUntilVisible('#mainpanel', function(){});
 });
 
 
+// *****************
+//
 // Create a virtual server
+//
+
 casper.then(function() {
     this.open('https://' + bigip_ip + '/tmui/Control/jspmap/tmui/locallb/virtual_server/create.jsp');
     this.withFrame('contentframe', function() {
@@ -53,7 +59,7 @@ casper.then(function() {
                     // selectedclientsslprofiles: 'clientssl'
 
                 }
-                // Dont submit the form here, send explicit click action below
+                // Dont auto submit the form here, send explicit click action below
                 // true
             );
             this.click('input[type="submit"][name="finished"]');
@@ -61,11 +67,15 @@ casper.then(function() {
     });
 });
 
-
+// *****************
+//
 // Create a node 
+//
+
 casper.then(function() {
     this.open('https://' + bigip_ip + '/tmui/Control/jspmap/tmui/locallb/node/create.jsp');
     this.withFrame('contentframe', function() {
+        // Wait for node create page to load before
         this.waitUntilVisible('#content', function(){
             this.fill('form[name="myform"]', 
                 { 
@@ -87,18 +97,19 @@ casper.then(function() {
 
 // Run the script
 casper.run(function() {
-    this.echo('ran and hopefully it worked');
+    // this.echo('ran and hopefully it worked');
     this.exit();
 });
 
 
+//*************
 //
 // Helper functions
 // 
 
 // Generate a Random IP
 function randomIP() {
-    return Math.round(Math.random()*255) 
+    return Math.round(Math.random()*220) 
     + '.' + Math.round(Math.random()*255) 
     + '.' + Math.round(Math.random()*255) 
     + '.' + Math.round(Math.random()*255);
