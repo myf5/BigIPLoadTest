@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys
+import sys 
 import mechanize
 import cookielib
 import time
