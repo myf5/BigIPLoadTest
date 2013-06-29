@@ -4,7 +4,7 @@ var password = 'admin';
 var bigip_ip = '1.1.1.2';
 
 
-// Store the virtual server name as a global to check for successful creation
+// Store the virtual server  name as a global to check for successful creation
 var vs_name = randomString();
 
 // debug options
