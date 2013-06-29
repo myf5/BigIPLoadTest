@@ -4,6 +4,7 @@ var casper = require('casper').create({
     logLevel: "debug"
 });
 
+// More debugging tools... I think?
 // require('utils').dump(casper.steps.map(function(step) {
 //     return step.toString();
 // }));
@@ -72,25 +73,25 @@ casper.then(function() {
 // Create a node 
 //
 
-casper.then(function() {
-    this.open('https://' + bigip_ip + '/tmui/Control/jspmap/tmui/locallb/node/create.jsp');
-    this.withFrame('contentframe', function() {
-        // Wait for node create page to load before
-        this.waitUntilVisible('#content', function(){
-            this.fill('form[name="myform"]', 
-                { 
-                    description: 'automated node creation',
-                    name: vs_name + "_node", 
-                    addr: randomIP(),
+// casper.then(function() {
+//     this.open('https://' + bigip_ip + '/tmui/Control/jspmap/tmui/locallb/node/create.jsp');
+//     this.withFrame('contentframe', function() {
+//         // Wait for node create page to load before
+//         this.waitUntilVisible('#content', function(){
+//             this.fill('form[name="myform"]', 
+//                 { 
+//                     description: 'automated node creation',
+//                     name: vs_name + "_node", 
+//                     addr: randomIP(),
 
-                }
-                // Dont submit the form here, send explicit click action below
-                // true
-            );
-            this.click('input[type="submit"][name="finished"]');
-        });
-    });
-});
+//                 }
+//                 // Dont submit the form here, send explicit click action below
+//                 // true
+//             );
+//             this.click('input[type="submit"][name="finished"]');
+//         });
+//     });
+// });
 
 // Take screencap.  For some reason this helps the VS creation success more often
 // casper.then(function() {this.capture('f5.png', {top: 0,left: 0,width: 1000,height: 1000});}); 
@@ -119,7 +120,7 @@ function randomIP() {
 function randomString()
 {
     var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     for( var i=0; i < 5; i++ )
         text += possible.charAt(Math.floor(Math.random() * possible.length));

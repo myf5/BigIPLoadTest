@@ -10,13 +10,13 @@ import Queue
 targetIP = argv[1]
 numClients = argv[2]
 script_name = "bigip_loadtest.js"
-
+wait_time = 2
 queue = Queue.Queue()
 iid = 1
 iid_lock = threading.Lock()
 
 class ThreadedClient(threading.Thread):
-	"""Threaded F5 login client"""
+	"""Threaded F5 GUI load test client"""
 	def __init__(self, queue):
 		threading.Thread.__init__(self)
 		self.queue = queue
@@ -48,10 +48,10 @@ def main():
 	client = 1
 	print "Load test start targetting IP: " + targetIP
 	for i in range(int(numClients)):
-		time.sleep(1)
+		time.sleep(wait_time)
 		t = ThreadedClient(queue)
 		t.start()
-		print "\t started client " + str(client)
+		print "\t Started client " + str(client)
 		client = client + 1
 	
 	queue.join()
