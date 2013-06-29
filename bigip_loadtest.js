@@ -1,6 +1,6 @@
 // debug options. Uncomment these when debugging
 var casper = require('casper').create({
-    // verbose: true,
+    verbose: true,
     logLevel: "debug"
 });
 
@@ -68,30 +68,33 @@ casper.then(function() {
     });
 });
 
+// Sleep for a few seconds to let the GUI catch up and be more realistic between clicks
+casper.wait(2500);
+
 // *****************
 //
 // Create a node 
 //
 
-// casper.then(function() {
-//     this.open('https://' + bigip_ip + '/tmui/Control/jspmap/tmui/locallb/node/create.jsp');
-//     this.withFrame('contentframe', function() {
-//         // Wait for node create page to load before
-//         this.waitUntilVisible('#content', function(){
-//             this.fill('form[name="myform"]', 
-//                 { 
-//                     description: 'automated node creation',
-//                     name: vs_name + "_node", 
-//                     addr: randomIP(),
+casper.then(function() {
+    this.open('https://' + bigip_ip + '/tmui/Control/jspmap/tmui/locallb/node/create.jsp');
+    this.withFrame('contentframe', function() {
+        // Wait for node create page to load before
+        this.waitUntilVisible('#content', function(){
+            this.fill('form[name="myform"]', 
+                { 
+                    description: 'automated node creation',
+                    name: vs_name + "_node", 
+                    addr: randomIP(),
 
-//                 }
-//                 // Dont submit the form here, send explicit click action below
-//                 // true
-//             );
-//             this.click('input[type="submit"][name="finished"]');
-//         });
-//     });
-// });
+                }
+                // Dont submit the form here, send explicit click action below
+                // true
+            );
+            this.click('input[type="submit"][name="finished"]');
+        });
+    });
+});
 
 // Take screencap.  For some reason this helps the VS creation success more often
 // casper.then(function() {this.capture('f5.png', {top: 0,left: 0,width: 1000,height: 1000});}); 
