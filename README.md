@@ -14,10 +14,10 @@ Simple load testing script to make sure we're not oversubscribed on our Viprion 
     ./loadrunner.py 192.168.1.254 10
 
 ### Caveats:
-- Tested on OSX 10.8.  Should run on linux as-is.  Windows, you're on your own.
-- Both scripts must be in the same directory
-- It could take a few minutes to run. See below  
-- Minimal error checking.  Uncomment the debug flags in the Casper script to troubleshoot
+- Tested on OSX 10.8.  Should run on linux as-is.  Windows, probably breaks with path issues.
+- Both scripts must be in the same directory.
+- It could take a few minutes to run. See below.
+- Minimal error checking.  Uncomment the debug flags in the Casper script to troubleshoot.
 - The Casper threads are prone to failing periodically.  Not sure why this is.
 
 ### Preliminary Results
