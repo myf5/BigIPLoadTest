@@ -1,7 +1,5 @@
-
-
 var casper = require('casper').create({
-    verbose: true,
+    // verbose: true,
     logLevel: "debug"
 });
 
@@ -16,11 +14,12 @@ casper.start('https://1.1.1.2/tmui/login.jsp', function() {
 casper.then(function() {
     this.open('https://1.1.1.2/tmui/Control/jspmap/tmui/locallb/virtual_server/create.jsp');
     this.withFrame('contentframe', function() {
-        // this.then(function() {this.capture('f5.png', {top: 0,left: 0,width: 800,height: 800});}); 
+        casper.wait(1000, function() {});
+        this.then(function() {this.capture('f5.png', {top: 0,left: 0,width: 800,height: 800});}); 
         this.fill('form[name="myform"]', 
             { 
-                name: makeid() + "_vs", 
-                destination_address_input_vs: '4.4.4.4',
+                name: randomVsName(), 
+                destination_address_input_vs: randomIP(),
                 port: '80'
             }
             // true
@@ -38,15 +37,20 @@ casper.run(function() {
     this.exit();
 });
 
+function randomIP() {
+    return Math.round(Math.random()*255) 
+    + '.' + Math.round(Math.random()*255) 
+    + '.' + Math.round(Math.random()*255) 
+    + '.' + Math.round(Math.random()*255);
+}
 
-
-function makeid()
+function randomVsName()
 {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
     for( var i=0; i < 5; i++ )
         text += possible.charAt(Math.floor(Math.random() * possible.length));
-
+        text += "_vs";
     return text;
 }
