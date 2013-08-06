@@ -23,3 +23,4 @@ Simple load testing script to make sure we're not oversubscribed on our Viprion 
 
 ### Preliminary Results
 - Viprion 2400 w/ 1 blade handled 60 clients without any noticeable GUI lag or CPU spike
+- 8/4 UPDATE: APM functions crash GUI on VE with ~15 clients
